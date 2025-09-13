@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Smart Campus Assistant</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #eaf4fc;
+      margin: 0;
+      padding: 0;
+    }
+    .chat-container {
+      width: 420px;
+      margin: 50px auto;
+      background-color: #fff;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.2);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+    .chat-header {
+      background-color: #0077cc;
+      color: white;
+      padding: 15px;
+      font-size: 20px;
+      text-align: center;
+    }
+    .chat-box {
+      height: 400px;
+      overflow-y: scroll;
+      padding: 15px;
+      flex-grow: 1;
+    }
+    .chat-message {
+      margin-bottom: 10px;
+    }
+    .user {
+      text-align: right;
+      color: #0077cc;
+    }
+    .bot {
+      text-align: left;
+      color: #2d862d;
+    }
+    .input-box {
+      display: flex;
+      border-top: 1px solid #ccc;
+    }
+    .input-box input {
+      flex-grow: 1;
+      padding: 10px;
+      font-size: 16px;
+      border: none;
+    }
+    .input-box button {
+      padding: 10px 20px;
+      background-color: #0077cc;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+    .input-box button:hover {
+      background-color: #005fa3;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="chat-container">
+    <div class="chat-header">Smart Campus Assistant</div>
+    <div class="chat-box" id="chatBox">
+      <!-- Chat messages will appear here -->
+    </div>
+    <div class="input-box">
+      <input type="text" id="userInput" placeholder="Ask me anything..." />
+      <button onclick="sendMessage()">Send</button>
+    </div>
+  </div>
+
+  <script>
+    const chatBox = document.getElementById("chatBox");
+
+    function sendMessage() {
+      const input = document.getElementById("userInput");
+      const userText = input.value.trim();
+      if (userText === "") return;
+
+      addMessage("You", userText, "user");
+
+      const botReply = getBotResponse(userText);
+      setTimeout(() => {
+        addMessage("Assistant", botReply, "bot");
+      }, 500);
+
+      input.value = "";
+    }
+
+    function addMessage(sender, text, className) {
+      const msg = document.createElement("div");
+      msg.classList.add("chat-message", className);
+      msg.innerHTML = `<strong>${sender}:</strong> ${text}`;
+      chatBox.appendChild(msg);
+      chatBox.scrollTop = chatBox.scrollHeight;
+    }
+
+    function getBotResponse(input) {
+      const text = input.toLowerCase();
+
+      // Responses for common campus queries
+      if (text.includes("schedule")) {
+        return "You can find your class schedule in the student portal under 'My Schedule'.";
+      } else if (text.includes("library")) {
+        return "The library is open from 8 AM to 10 PM on weekdays. You can borrow books using your student ID.";
+      } else if (text.includes("dining") || text.includes("canteen") || text.includes("food")) {
+        return "Dining facilities are available in the main cafeteria from 7 AM to 9 PM. Check the campus app for daily menus.";
+      } else if (text.includes("facilities")) {
+        return "Our campus includes a gym, sports complex, labs, and computer centers. Access them with your student card.";
+      } else if (text.includes("administrative") || text.includes("admission") || text.includes("fees") || text.includes("procedure")) {
+        return "For admissions, fee payments, or admin services, please visit the Administration Office or use the campus portal.";
+      } else if (text.includes("hello") || text.includes("hi") || text.includes("hey")) {
+        return "Hello! I'm your Smart Campus Assistant. How can I help you today?";
+      } else if (text.includes("help")) {
+        return "You can ask me about your schedule, facilities, dining, library services, or administrative procedures.";
+      } else {
+        return "Sorry, I don't understand that yet. Please ask about campus schedules, facilities, dining, library, or admin services.";
+      }
+    }
+  </script>
+
+</body>
+</html>
